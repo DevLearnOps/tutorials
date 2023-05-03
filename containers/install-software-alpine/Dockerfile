@@ -1,8 +1,12 @@
 FROM alpine:3.17
 
-# Install `curl` and cleanup apk caches
+# Install `curl` to perform some installation step,
+# uninstall `curl` as not needed to run the application
+# and cleanup repository cache
 RUN apk update \
     && apk add curl \
+    && echo "Do something with curl" \
+    && apk del curl \
     && rm -rf /var/cache/apk
 
 # Make sure community repository is enabled.
