@@ -1,0 +1,38 @@
+title: "Verify Nginx web server is always running on the system"
+description: |
+  This experiment is designed to learn if the Ningx service installed
+  in the local system is automatically restarted in the event of an
+  unplanned shutdown
+
+# Experiment-specific configuration
+# The configuration section can be used to define variables for the whole experiment
+configuration:
+  service_url: http://localhost:8080/
+  container_name: webserver
+
+# Verify the system's steady-state
+steady-state-hypothesis:
+  title: "Ningx web server is available"
+  probes:
+    - type: probe
+      name: "server-must-respond"
+      tolerance: 200
+      provider:
+        type: http
+        url: "${service_url}"
+        method: "GET"
+        timeout: 3
+
+# Introduce chaos, change initial conditions
+method:
+  - type: action
+    name: "terminate-nginx-service"
+    provider:
+      type: process
+      path: docker
+      arguments: "exec ${container_name} nginx -s quit"
+    pauses:
+      after: 5
+
+# Restore system's original state, if necessary
+rollbacks: []
