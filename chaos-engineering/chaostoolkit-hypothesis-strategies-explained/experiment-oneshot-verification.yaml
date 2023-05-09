@@ -15,7 +15,7 @@ configuration:
   cluster_arn: null  # to be determined at runtime
   service_arn: null  # to be determined at runtime
   stop_reason_msg: "Chaos engineering testing"
-  allowed_recovery_time: 120
+  allowed_recovery_time_seconds: 120
 
 # Verify the system's steady-state
 steady-state-hypothesis:
@@ -53,4 +53,4 @@ method:
       module: chaosaddons.utils.idle
       func: idle_for
       arguments:
-        duration: ${allowed_recovery_time}
+        duration: ${allowed_recovery_time_seconds}
