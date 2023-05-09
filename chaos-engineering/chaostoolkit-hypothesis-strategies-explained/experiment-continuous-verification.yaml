@@ -1,0 +1,48 @@
+title: "Verify if service can sustain increase in traffic"
+description: |
+  This experiment is designed to verify if an AWS ECS service can sustain an
+  increase in traffic without failing.
+  This is a good example of how steady state verification needs to run
+  continuously to verify users don't experience service down-time throughout
+  the duration of the experiment.
+
+contributions:
+  reliability: "medium"
+  scalability: "high"
+  security: "none"
+
+configuration:
+  service_url: "http://localhost:8080"
+  stress_users: 50
+  stress_duration: "2m"
+
+# Verify the system's steady-state
+steady-state-hypothesis:
+  title: "Service must always respond"
+  probes:
+    - type: probe
+      name: "service-must-respond"
+      tolerance:
+        type: "range"
+        range: [200, 299]
+        target: "status"
+      provider:
+        type: http
+        url: "${service_url}/health"
+        method: "GET"
+        timeout: 5
+
+
+# Simulate some traffic on the environment
+# using Grafana K6
+method:
+  - type: action
+    name: "stress-endpoint-with-simulated-traffic"
+    provider:
+      type: python
+      module: chaosk6.actions
+      func: stress_endpoint
+      arguments:
+        endpoint: ${service_url}
+        vus: ${stress_users}
+        duration: ${stress_duration}

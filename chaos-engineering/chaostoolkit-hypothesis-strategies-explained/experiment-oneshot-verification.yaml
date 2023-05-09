@@ -1,0 +1,46 @@
+title: "Verify if service can recover from container loss"
+description: |
+  This experiment is designed to verify if an AWS ECS service can recover
+  from the loss of a percentage of its running containers timely.
+  This is a good example of how steady state verification needs to run just
+  once at the start of the test and once at the end of the test because the
+  state during method execution would be inconsitent with the desired tolerance.
+
+contributions:
+  reliability: "high"
+  scalability: "medium"
+  security: "none"
+
+configuration:
+  cluster_arn: null  # to be determined at runtime
+  service_arn: null  # to be determined at runtime
+  stop_reason_msg: "Chaos engineering testing"
+
+# Verify the system's steady-state
+steady-state-hypothesis:
+  title: "All container replicas should be online"
+  probes:
+    - type: probe
+      name: "desired-tasks-should-be-running"
+      tolerance: true
+      provider:
+        type: python
+        module: chaosaws.ecs.probes
+        func: are_all_desired_tasks_running
+        arguments:
+          cluster: "${cluster_arn}"
+          service: "${service_name}"
+
+# Introduce chaos, change initial conditions
+method:
+  - type: action
+    name: "service-loses-half-capacity"
+    provider:
+      type: python
+      module: chaosaws.ecs.actions
+      func: stop_random_tasks
+      arguments:
+        cluster: "${cluster_arn}"
+        service: "${service_name}"
+        task_percent: 50
+        reason: "${stop_reason_msg}"
