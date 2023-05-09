@@ -1,0 +1,3 @@
+configuration:
+  stress_duration: '120s'
+  stress_users: 50

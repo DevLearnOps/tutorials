@@ -1,0 +1,48 @@
+title: "Mastering Experiment Configuration"
+description: |
+  This experiment contains examples of how to use configuration variables
+  in ChaosToolkit experiment templates
+
+# Inline configuration is provided with values for
+# local development of the experiment
+configuration:
+  endpoint:
+    type: "env"
+    key: "APP_ENDPOINT"
+    default: "http://localhost:8080"
+  stress_duration:
+    type: "env"
+    key: "STRESS_DURATION"
+    default: "10s"
+  stress_users:
+    type: "env"
+    key: "STRESS_USERS"
+    default: "2"
+    env_var_type: int
+
+
+steady-state-hypothesis:
+  title: "Verify server is available"
+  probes:
+    - type: probe
+      name: "server-must-respond-200"
+      tolerance: 200
+      provider:
+        type: http
+        url: "${endpoint}"
+        method: "GET"
+        timeout: 3
+
+# Simulate some traffic on the environment
+# using Grafana K6
+method:
+  - type: action
+    name: "stress-endpoint-with-simulated-traffic"
+    provider:
+      type: python
+      module: chaosk6.actions
+      func: stress_endpoint
+      arguments:
+        endpoint: ${endpoint}
+        vus: ${stress_users}
+        duration: ${stress_duration}
