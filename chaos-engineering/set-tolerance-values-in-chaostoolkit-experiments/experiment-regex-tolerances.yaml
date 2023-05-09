@@ -1,0 +1,42 @@
+title: "ChaosToolkit Regex Tolerance Examples"
+description: |
+  This experiment contains examples of how to set tolerance values
+  using Regular Expressions
+
+steady-state-hypothesis:
+  title: "A collection of probe tolerances for regular expressions"
+  probes:
+
+    #
+    # Examples of verifications with regex
+    #
+    - type: probe
+      name: "should-be-allowed-mime-type"
+      tolerance:  # Tolerance match with regular expression
+        type: regex
+        pattern: "text\/[plain|html]"
+      provider:
+        type: python
+        module: chaostutorial.http.probes
+        func: response_mime_type
+        arguments:
+          url: "http://localhost:8080"
+          method: "GET"
+          timeout: 3
+
+    #
+    # Verify tolerance with regular expressions on
+    # non-default target output property
+    #
+    - type: probe
+      name: "container-must-exist"
+      tolerance:
+        type: regex
+        pattern: "webserver"
+        target: stdout # match on 'stdout' property
+      provider:
+        type: process
+        path: docker
+        arguments: "container ps --filter name=webserver --format '{{lower .Names}}'"
+
+method: []

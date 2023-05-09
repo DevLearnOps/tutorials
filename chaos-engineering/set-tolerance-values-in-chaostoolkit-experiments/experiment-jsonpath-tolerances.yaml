@@ -1,0 +1,40 @@
+title: "ChaosToolkit JsonPath Tolerance Examples"
+description: |
+  This experiment contains examples of how to set tolerance values
+  using JsonPath Expressions. For full jsonpath reference see this
+  documentation page => https://jsonpath2.readthedocs.io/en/latest/exampleusage.html
+
+steady-state-hypothesis:
+  title: "A collection of probe tolerances for jsonpath2"
+  probes:
+
+    #
+    # Examples of verifications with jsonpath
+    #
+    - type: probe
+      name: "content-type-should-be-html"
+      tolerance:  # Match json object with jsonpath2
+        type: jsonpath
+        path: '$.headers["Content-Type"]'
+        expect: "text/html"
+      provider:
+        type: http
+        url: "http://localhost:8080"
+        method: "GET"
+        timeout: 3
+
+    #
+    # Verify tolerance with jsonpath functions
+    #
+    - type: probe
+      name: "response-must-not-be-empty"
+      tolerance:  # use lenght() function to calculate body size
+        type: jsonpath
+        path: '$.body[length()][?(@ > 500)]'
+      provider:
+        type: http
+        url: "http://localhost:8080"
+        method: "GET"
+        timeout: 3
+
+method: []

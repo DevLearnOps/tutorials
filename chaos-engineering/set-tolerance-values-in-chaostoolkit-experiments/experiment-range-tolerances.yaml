@@ -1,0 +1,47 @@
+title: "ChaosToolkit Range Tolerance Examples"
+description: |
+  This experiment contains examples of how to set tolerance values
+  using ranges of values
+
+steady-state-hypothesis:
+  title: "A collection of probe tolerances for ranges"
+  probes:
+
+    #
+    # Examples of verifications with range
+    #
+    - type: probe
+      name: "should-respond-in-500ms-or-less"
+      tolerance:
+        type: "range"
+        range:
+          - 0
+          - 500
+      provider:
+        type: python
+        module: chaostutorial.http.probes
+        func: request_duration
+        arguments:
+          url: "http://localhost:8080"
+          method: "GET"
+          timeout: 3
+
+    #
+    # Verify http status codes with range using
+    # non-default target output property
+    #
+    - type: probe
+      name: "server-must-respond-2xx"
+      tolerance: # checks range against probe output['status']
+        type: "range"
+        range:
+          - 200
+          - 299
+        target: "status"
+      provider:
+        type: http
+        url: "http://localhost:8080"
+        method: "GET"
+        timeout: 3
+
+method: []

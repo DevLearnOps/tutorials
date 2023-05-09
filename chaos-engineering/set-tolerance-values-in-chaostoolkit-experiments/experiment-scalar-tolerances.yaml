@@ -1,0 +1,80 @@
+title: "ChaosToolkit Scalar Tolerance Examples"
+description: |
+  This experiment contains examples of how to set tolerance values
+  using exact matches on scalar values
+
+steady-state-hypothesis:
+  title: "A collection of probe tolerances for scalar values"
+  probes:
+
+    #
+    # Examples of verifications with exact match on single scalar values
+    #
+    - type: probe
+      name: "server-must-respond-200"
+      tolerance: 200  # compares against "status" by default
+      provider:
+        type: http
+        url: "http://localhost:8080"
+        method: "GET"
+        timeout: 3
+
+    - type: probe
+      name: "file-must-not-exist"
+      tolerance: false
+      provider:
+        type: python
+        module: os.path
+        func: exists
+        arguments:
+          path: "./output.log"
+
+
+    #
+    # Examples of verifications with scalar ranges
+    # using sequences with 2 elements
+    #
+    - type: probe
+      name: "should-respond-in-500ms-or-less"
+      tolerance: [0, 500]  # with two values, tolerance is a range
+      provider:
+        type: python
+        module: chaostutorial.http.probes
+        func: request_duration
+        arguments:
+          url: "http://localhost:8080"
+          method: "GET"
+          timeout: 3
+
+    #
+    # Examples of verifications with exact matches using
+    # sequences of allowed values
+    #
+    - type: probe
+      name: "should-be-allowed-content-type"
+      tolerance:
+        - 'text/plain'
+        - 'text/html'
+        - 'application/xml'
+      provider:
+        type: python
+        module: chaostutorial.http.probes
+        func: response_mime_type
+        arguments:
+          url: "http://localhost:8080"
+          method: "GET"
+          timeout: 3
+
+    - type: probe
+      name: "check-allowed-response-codes"
+      tolerance:
+        - 200
+        - 201
+        - 000 # use impossible value so sequence is not used as range
+      provider:
+        type: http
+        url: "http://localhost:8080"
+        method: "GET"
+        timeout: 3
+
+method: []
