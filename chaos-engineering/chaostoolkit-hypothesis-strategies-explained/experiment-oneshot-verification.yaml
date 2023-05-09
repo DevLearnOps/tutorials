@@ -13,9 +13,17 @@ contributions:
 
 configuration:
   cluster_arn: null  # to be determined at runtime
-  service_arn: null  # to be determined at runtime
+  service_name: null  # to be determined at runtime
   new_desired_count: 10
   allowed_start_time_seconds: 120
+  aws_profile_name:
+    type: "env"
+    key: "AWS_PROFILE"
+    default: "default"
+  aws_region:
+    type: "env"
+    key: "AWS_DEFAULT_REGION"
+    default: "us-east-1"
 
 steady-state-hypothesis:
   title: "All container replicas should be online"

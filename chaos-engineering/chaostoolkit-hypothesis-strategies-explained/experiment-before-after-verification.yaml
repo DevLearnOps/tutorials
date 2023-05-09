@@ -13,9 +13,17 @@ contributions:
 
 configuration:
   cluster_arn: null  # to be determined at runtime
-  service_arn: null  # to be determined at runtime
+  service_name: null  # to be determined at runtime
   stop_reason_msg: "Chaos engineering testing"
   allowed_recovery_time_seconds: 120
+  aws_profile_name:
+    type: "env"
+    key: "AWS_PROFILE"
+    default: "default"
+  aws_region:
+    type: "env"
+    key: "AWS_DEFAULT_REGION"
+    default: "us-east-1"
 
 # Verify the system's steady-state
 steady-state-hypothesis:
