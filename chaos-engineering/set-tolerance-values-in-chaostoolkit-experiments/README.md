@@ -1,7 +1,7 @@
 # A Guide To Probe Tolerances In ChaosToolkit
 
 **Related Articles**
-* [A Guide To Probe Tolerances In Chaostoolkit Experiment Verifications](https://blog.devlearnops.com/set-tolerance-values-in-chaostoolkit-experiments)
+* [A Guide To Probe Tolerances In Chaostoolkit Experiment Verifications](https://devlearnops.com/set-tolerance-values-in-chaostoolkit-experiments)
 
 ## Installation Instructions
 
