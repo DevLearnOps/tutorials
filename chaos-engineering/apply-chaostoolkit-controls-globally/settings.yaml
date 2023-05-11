@@ -1,0 +1,23 @@
+# Global ChaosToolkit configuration file.
+# Settings will be applied automatically by CTK if they're placed
+# under the '$HOME/.chaostoolkit/settings.yaml'.
+#
+# Alternatively you can apply settings from cli:
+# > chaos --settings ./settings.yaml run [EXPERIMENT_PATH]
+
+# The format to define controls in settings files is the following:
+#
+# controls:
+#   [control_name]:
+#     provider:
+#       [... provider configuration]
+#
+controls:
+  s3-upload:
+    provider:
+      type: python
+      module: chaosaws.s3.controls.upload
+      arguments:
+        bucket_name: "ctk-journals"
+        suffix_with_timestamp: true
+        dirpath: 'journals'
