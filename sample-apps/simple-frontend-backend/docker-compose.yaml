@@ -1,0 +1,22 @@
+version: "3.1"
+
+services:
+  front:
+    build:
+      context: .
+      args:
+        APP_MODULE: "front"
+    container_name: sampleapp-front
+    ports:
+      - "8000:8000"
+    environment:
+      - "BACK_URL=http://back:8000"
+
+  back:
+    build:
+      context: .
+      args:
+        APP_MODULE: "back"
+    container_name: sampleapp-back
+    ports:
+      - "8999:8000"
