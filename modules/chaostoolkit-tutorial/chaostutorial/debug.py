@@ -1,12 +1,23 @@
 from typing import Any, Dict, List
 
-from chaoslib.types import Activity, Configuration, \
-    Experiment, Hypothesis, Journal, Run, Secrets, Settings
+from chaoslib.types import (
+    Activity,
+    Configuration,
+    Experiment,
+    Hypothesis,
+    Journal,
+    Run,
+    Secrets,
+    Settings,
+)
 
 
-def configure_control(configuration: Configuration = None,
-                      secrets: Secrets = None, settings: Settings = None,
-                      experiment: Experiment = None):
+def configure_control(
+    configuration: Configuration = None,
+    secrets: Secrets = None,
+    settings: Settings = None,
+    experiment: Experiment = None,
+):
     """
     Configure the control's global state
 
@@ -48,9 +59,12 @@ def after_loading_experiment_control(context: str, state: Experiment, **kwargs):
     pass
 
 
-def before_experiment_control(context: Experiment,
-                              configuration: Configuration = None,
-                              secrets: Secrets = None, **kwargs):
+def before_experiment_control(
+    context: Experiment,
+    configuration: Configuration = None,
+    secrets: Secrets = None,
+    **kwargs
+):
     """
     before-control of the experiment's execution
 
@@ -60,9 +74,13 @@ def before_experiment_control(context: Experiment,
     print(configuration)
 
 
-def after_experiment_control(context: Experiment, state: Journal, 
-                             configuration: Configuration = None,
-                             secrets: Secrets = None, **kwargs):
+def after_experiment_control(
+    context: Experiment,
+    state: Journal,
+    configuration: Configuration = None,
+    secrets: Secrets = None,
+    **kwargs
+):
     """
     after-control of the experiment's execution
 
@@ -75,9 +93,12 @@ def after_experiment_control(context: Experiment, state: Journal,
     print(configuration)
 
 
-def before_hypothesis_control(context: Hypothesis,
-                              configuration: Configuration = None,
-                              secrets: Secrets = None, **kwargs):
+def before_hypothesis_control(
+    context: Hypothesis,
+    configuration: Configuration = None,
+    secrets: Secrets = None,
+    **kwargs
+):
     """
     before-control of the hypothesis's execution
 
@@ -87,9 +108,13 @@ def before_hypothesis_control(context: Hypothesis,
     print(configuration)
 
 
-def after_hypothesis_control(context: Hypothesis, state: Dict[str, Any],
-                             configuration: Configuration = None,
-                             secrets: Secrets = None, **kwargs):
+def after_hypothesis_control(
+    context: Hypothesis,
+    state: Dict[str, Any],
+    configuration: Configuration = None,
+    secrets: Secrets = None,
+    **kwargs
+):
     """
     after-control of the hypothesis's execution
 
@@ -101,9 +126,12 @@ def after_hypothesis_control(context: Hypothesis, state: Dict[str, Any],
     print(configuration)
 
 
-def before_method_control(context: Experiment, 
-                          configuration: Configuration = None,
-                          secrets: Secrets = None, **kwargs):
+def before_method_control(
+    context: Experiment,
+    configuration: Configuration = None,
+    secrets: Secrets = None,
+    **kwargs
+):
     """
     before-control of the method's execution
 
@@ -113,9 +141,13 @@ def before_method_control(context: Experiment,
     print(configuration)
 
 
-def after_method_control(context: Experiment, state: List[Run], 
-                         configuration: Configuration = None,
-                         secrets: Secrets = None, **kwargs):
+def after_method_control(
+    context: Experiment,
+    state: List[Run],
+    configuration: Configuration = None,
+    secrets: Secrets = None,
+    **kwargs
+):
     """
     after-control of the method's execution
 
@@ -127,9 +159,12 @@ def after_method_control(context: Experiment, state: List[Run],
     print(configuration)
 
 
-def before_rollback_control(context: Experiment, 
-                            configuration: Configuration = None,
-                            secrets: Secrets = None, **kwargs):
+def before_rollback_control(
+    context: Experiment,
+    configuration: Configuration = None,
+    secrets: Secrets = None,
+    **kwargs
+):
     """
     before-control of the rollback's execution
 
@@ -139,9 +174,13 @@ def before_rollback_control(context: Experiment,
     print(configuration)
 
 
-def after_rollback_control(context: Experiment, state: List[Run], 
-                           configuration: Configuration = None,
-                           secrets: Secrets = None, **kwargs):
+def after_rollback_control(
+    context: Experiment,
+    state: List[Run],
+    configuration: Configuration = None,
+    secrets: Secrets = None,
+    **kwargs
+):
     """
     after-control of the rollback's execution
 
@@ -153,20 +192,36 @@ def after_rollback_control(context: Experiment, state: List[Run],
     print(configuration)
 
 
-def before_activity_control(context: Activity, 
-                            configuration: Configuration = None,
-                            secrets: Secrets = None, **kwargs):
+def before_activity_control(
+    context: Activity,
+    configuration: Configuration = None,
+    secrets: Secrets = None,
+    **kwargs
+):
     """
     before-control of the activity's execution
 
     Called by the Chaos Toolkit before the activity is applied.
     """
-    print(configuration)
+    print("\nbefore_activity_control")
+    print("context", context)
+    print("configuration", configuration)
+    print("kwargs", kwargs)
+
+    provider = context.get("provider", {})
+    xargs = provider.pop("xargs", None)
+    if xargs:
+        for key, value in xargs.items():
+            provider[key] = value
 
 
-def after_activity_control(context: Activity, state: Run,  
-                           configuration: Configuration = None,
-                           secrets: Secrets = None, **kwargs):
+def after_activity_control(
+    context: Activity,
+    state: Run,
+    configuration: Configuration = None,
+    secrets: Secrets = None,
+    **kwargs
+):
     """
     after-control of the activity's execution
 

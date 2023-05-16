@@ -2,6 +2,12 @@ title: "Check service online"
 description: |
   Check website responds with 200 HTTP status code
 
+controls:
+  - name: debug
+    provider:
+      type: python
+      module: chaostutorial.debug
+
 steady-state-hypothesis:
   title: "Check website online"
   probes:
@@ -12,5 +18,7 @@ steady-state-hypothesis:
         type: http
         url: "http://www.google.com/"
         method: "GET"
+        #xargs:
+          #url: "http://localhost"
 
 method: []
