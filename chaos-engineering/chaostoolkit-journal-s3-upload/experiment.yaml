@@ -1,4 +1,4 @@
-title: "A an experiment to check if a bucket exists"
+title: "An experiment to check if a bucket exists"
 description: |
   This experiment is for demonstration purposes and it verifies
   a bucket exists in S3
@@ -8,7 +8,7 @@ configuration:
   aws_region: us-east-1
 
 # The `chaosaws.s3.controls.upload` control will upload
-# the experiment journal to "s3://ctk-journals/journals"
+# the experiment journal to "s3://<ACCOUNT-ID>-ctk-journals/journals"
 # once the experiment is finished
 controls:
   - name: upload
@@ -16,7 +16,7 @@ controls:
       type: python
       module: chaosaws.s3.controls.upload
       arguments:
-        bucket_name: "ctk-journals"
+        bucket_name: "<ACCOUNT-ID>-ctk-journals"
         suffix_with_timestamp: true
         dirpath: 'journals'
 

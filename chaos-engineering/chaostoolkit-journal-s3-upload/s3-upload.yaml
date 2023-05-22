@@ -15,7 +15,7 @@ s3-upload:
     type: python
     module: chaosaws.s3.controls.upload
     arguments:
-      bucket_name: "ctk-journals"
+      bucket_name: "<ACCOUNT-ID>-ctk-journals"
       suffix_with_timestamp: true
       dirpath: 'journals'
 
