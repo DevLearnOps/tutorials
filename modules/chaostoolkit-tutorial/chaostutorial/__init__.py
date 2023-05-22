@@ -35,6 +35,5 @@ def load_exported_activities() -> List[DiscoveredActivities]:
     """
     activities = []
     activities.extend(discover_probes("chaostutorial.http.probes"))
-    activities.extend(discover_activities("chaostutorial.debug", "control"))
 
     return activities
