@@ -31,6 +31,6 @@ steady-state-hypothesis:
         module: chaosaws.s3.probes
         func: bucket_exists
         arguments:
-          bucket_name: "ctk-journals"
+          bucket_name: "<ACCOUNT-ID>-ctk-journals"
 
 method: []
