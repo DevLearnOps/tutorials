@@ -1,0 +1,26 @@
+backend-safeguards:
+  provider:
+    type: python
+    module: chaosaddons.controls.safeguards
+    arguments:
+      probes:
+        - type: probe
+          name: "backend-container-must-be-running"
+          tolerance:
+            type: regex
+            target: stdout
+            pattern: sampleapp-back
+          provider:
+            type: process
+            path: "docker"
+            arguments: "container ps --filter name=sampleapp-back --format '{{lower .Names}}'"
+        - type: probe
+          name: "backend-must-be-healthy"
+          frequency: 2
+          background: true
+          tolerance: 200
+          provider:
+            type: http
+            url: "http://localhost:8999/health"
+            method: "GET"
+            timeout: 2

@@ -1,0 +1,16 @@
+title: "Check service online"
+description: |
+  Check website responds with 200 HTTP status code
+
+steady-state-hypothesis:
+  title: "Check website online"
+  probes:
+    - type: probe
+      name: "check-http-status"
+      tolerance: 200
+      provider:
+        type: http
+        url: "http://www.google.com/"
+        method: "GET"
+
+method: []

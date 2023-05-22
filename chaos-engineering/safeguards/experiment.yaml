@@ -1,0 +1,49 @@
+title: "ChaosToolkit experiment with Safeguards"
+description: |
+  This experiment is an example of how to use `safeguards` to ensure we
+  bail out of an experiment early when an unwanted effect is introduced.
+
+steady-state-hypothesis:
+  title: "Verify server is available"
+  probes:
+    - type: probe
+      name: "server-must-respond-200"
+      tolerance: 200
+      provider:
+        type: http
+        url: "http://localhost:8000"
+        method: "GET"
+        timeout: 3
+
+method:
+  # Simulate some user traffic using Grafana k6
+  - type: action
+    name: "stress-endpoint-with-simulated-traffic"
+    provider:
+      type: python
+      module: chaosk6.actions
+      func: stress_endpoint
+      arguments:
+        endpoint: "http://localhost:8000"
+        vus: 1
+        duration: "10s"
+
+  # Simulate failure on backend container
+  - type: action
+    name: "fail-backend-container"
+    provider:
+      type: http
+      url: "http://localhost:8999/_chaos/fail"
+      method: "POST"
+      timeout: 2
+
+  # Stress the frontend application some more
+  - ref: "stress-endpoint-with-simulated-traffic"
+
+rollbacks:
+  - type: action
+    name: "restart-backend-container"
+    provider:
+      type: process
+      path: docker
+      arguments: "start sampleapp-back"

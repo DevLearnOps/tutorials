@@ -1,0 +1,21 @@
+# External control configuration file.
+# This control can be applied to existing experiment using the
+# `--control-file` options:
+#
+# > chaos run --control-file s3-upload.yaml [EXPERIMENT_PATH]
+
+# The format for control-files is the following:
+#
+# [control_name]:
+#   provider:
+#     [... provider configuration]
+#
+s3-upload:
+  provider:
+    type: python
+    module: chaosaws.s3.controls.upload
+    arguments:
+      bucket_name: "<ACCOUNT-ID>-ctk-journals"
+      suffix_with_timestamp: true
+      dirpath: 'journals'
+
