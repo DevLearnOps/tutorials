@@ -134,3 +134,7 @@ datasets/
 # ChaosToolkit files
 journal.json
 chaostoolkit.log
+
+# Terraform
+.terraform*
+terraform.tfstate*
