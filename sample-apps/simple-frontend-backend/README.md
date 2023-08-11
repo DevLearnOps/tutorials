@@ -91,7 +91,7 @@ with the following content:
 # ./terragrunt.hcl
 
 terraform {
-  source = "git::git@github.com:DevLearnOps/tutorials/sample-apps/simple-frontend-backend//infrastructure?ref=main"
+  source = "git::git@github.com:DevLearnOps/tutorials//sample-apps/simple-frontend-backend/infrastructure?ref=main"
 }
 
 inputs = {
@@ -117,14 +117,33 @@ export AWS_PROFILE=default            # or replace with your aws profile
 # initialize terraform modules
 terragrunt init
 
-# apply stack and specify mandatory variables using `--var`
-terragrunt apply \
+# apply stack
+terragrunt apply
 
 # Do you want to perform these actions?
 #   Terraform will perform the actions described above.
 #   Only 'yes' will be accepted to approve.
 # 
 #   Enter a value: -> <type "yes">
+```
+
+### Cleanup created resources
+
+Depending on whether you deployed the infrastructure using **Terraform** or **Terragrunt**, to remove all created resources
+from your AWS account just use the `destroy` like so:
+
+**Using Terraform**
+
+```shell
+terraform destroy \
+    --var environment=tutorial \
+    --var application_name=sample-app
+```
+
+**Using Terragrunt**
+
+```shell
+terragrunt destroy
 ```
 
 [Terraform]: https://www.terraform.io/
