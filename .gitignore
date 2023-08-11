@@ -134,3 +134,9 @@ datasets/
 # ChaosToolkit files
 journal.json
 chaostoolkit.log
+
+# Terraform resources
+terraform.tfstate*
+.terraform*
+.terragrunt-cache
+
