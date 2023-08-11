@@ -13,6 +13,10 @@ if not BACKEND_URL:
     )
 
 
+async def health(request):
+    return JSONResponse({"status": "healthy"})
+
+
 async def homepage(request):
     try:
         response = requests.get(f"{BACKEND_URL}/greet", timeout=5)
@@ -38,6 +42,7 @@ async def homepage(request):
 app = Starlette(
     debug=bool(os.getenv("DEBUG", False)),
     routes=[
+        Route("/health", health),
         Route("/", homepage),
     ],
 )

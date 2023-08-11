@@ -2,7 +2,7 @@
 
 This folder contains a simple Python web application for chaos engineering testing.
 
-## How to run the application
+## How to run the application locally
 
 You can run this application using **Docker**:
 
@@ -39,4 +39,46 @@ To stop the back application POST an empty message to `/_chaos/fail` backend end
 
 ```shell
 curl -I http://localhost:8999/_chaos/fail
+```
+
+## How to run the application on AWS
+
+The `./infrastructure/` folder contains [Terraform][] code to deploy this sample *frontend-backend* application on your own AWS account.
+The deployment will create the following:
+
+[Terraform]: https://www.terraform.io/
+
+* A new VPC with public and private subnets
+* A new ECS cluster
+* Two ECS services in the cluster (one to run the `front` container and another to run the `back` container)
+* A public facing ALB (Application Load Balancer) to serve the front API publicly
+* A private ALB to load balance the backend application
+* Additional supporting resources
+
+
+### Creating resources using Terraform
+
+```shell
+cd ./infrastructure
+export AWS_DEFAULT_REGION=us-east-1   # or replace with your region
+export AWS_PROFILE=default            # or replace with your aws profile
+
+terraform init
+terraform apply --auto-approve
+```
+
+### Creating resources using Terragrunt
+
+```terraform
+# ./terragrunt.hcl
+
+terraform {
+  #source = "git::git@github.com:foo/modules.git//app?ref=v0.0.3"
+  source = "./simple-frontend-backend//infrastructure"
+}
+
+inputs = {
+  environment = "tutorial"
+  application_name  = "sample-app"
+}
 ```
