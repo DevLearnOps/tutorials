@@ -127,6 +127,19 @@ terragrunt apply
 #   Enter a value: -> <type "yes">
 ```
 
+### Reading application public URL
+
+If you deployed your application on AWS, you will be able to access it from its **public application load balancer**. The
+URL is exported by the Terraform code and to read it use the following command:
+
+```shell
+# with terraform
+terraform output
+
+# with terragrunt
+terragrunt output
+```
+
 ### Cleanup created resources
 
 Depending on whether you deployed the infrastructure using **Terraform** or **Terragrunt**, to remove all created resources
