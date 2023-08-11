@@ -1,15 +1,3 @@
-provider "aws" {
-  default_tags {
-    tags = merge(
-      {
-        Environment = var.environment
-        Application = var.application_name
-      },
-      var.tags,
-    )
-  }
-}
-
 ########################################################################
 #  AWS VPC
 ########################################################################

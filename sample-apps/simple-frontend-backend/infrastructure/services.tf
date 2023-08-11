@@ -1,3 +1,6 @@
+########################################################################
+#  Application Services
+########################################################################
 module "alb_security_group" {
   source  = "terraform-aws-modules/security-group/aws"
   version = "5.1.0"
@@ -13,6 +16,12 @@ module "alb_security_group" {
   egress_cidr_blocks = [module.vpc.vpc_cidr_block]
 }
 
+module "app_cluster" {
+  source  = "terraform-aws-modules/ecs/aws//modules/cluster"
+  version = "5.2.0"
+
+  cluster_name = "${local.name}-cluster"
+}
 
 module "alb" {
   source  = "terraform-aws-modules/alb/aws"
@@ -63,14 +72,7 @@ module "alb" {
 
 }
 
-module "app_cluster" {
-  source  = "terraform-aws-modules/ecs/aws//modules/cluster"
-  version = "5.2.0"
-
-  cluster_name = "${local.name}-cluster"
-}
-
-module "front_service" {
+module "service" {
   source  = "terraform-aws-modules/ecs/aws//modules/service"
   version = "5.2.0"
 
