@@ -1,0 +1,20 @@
+title: "Verify application is live"
+description: |
+  This experiment checks the application deployed on Amazon ECS
+  is live and responding to requests.
+
+configuration:
+  app_url: "http://localhost:8000"
+
+steady-state-hypothesis:
+  title: "application-is-live"
+  probes:
+    - name: "should-return-200-status"
+      type: probe
+      tolerance: 200
+      provider:
+        type: http
+        url: ${app_url}
+        timeout: 3
+
+method: []
