@@ -1,0 +1,38 @@
+title: Container restart policy
+description: >-
+  Verify that a Docker container running with a restart policy set to `always`
+  will automatically restart every time the container fails.
+
+controls:
+  - name: chaosterraform
+    provider:
+      type: python
+      module: chaosterraform.control
+      arguments:
+        variables:
+          container_name: "webserver"
+          exposed_port: 8080
+          restart_policy: "always"
+
+steady-state-hypothesis:
+  title: "service-is-running"
+  probes:
+    - name: "nginx-is-running"
+      type: probe
+      tolerance: 200
+      provider:
+        type: http
+        url: "${tf_out__application_url}"
+        method: "GET"
+        timeout: 2
+
+method:
+  - name: "terminate-nginx"
+    type: action
+    provider:
+      type: process
+      path: "docker"
+      arguments: "exec webserver nginx -s quit"
+    pauses:
+      # Allow 5 seconds for the service to recover
+      after: 5
