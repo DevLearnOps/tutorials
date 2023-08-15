@@ -43,7 +43,7 @@ curl -I http://localhost:8999/_chaos/fail
 
 ## How to run the application on AWS
 
-The `./infrastructure/` folder contains [Terraform][] code to deploy this sample *frontend-backend* application on your own AWS account.
+The `./infrastructure/aws/` folder contains [Terraform][] code to deploy this sample *frontend-backend* application on your own AWS account.
 The deployment will create the following:
 
 * A new VPC with public and private subnets
@@ -56,10 +56,10 @@ The deployment will create the following:
 ### Creating resources using Terraform
 
 If you have the tutorial project checked out locally, the quickest way to deploy this application
-on your own AWS account is directly from the `./infrastructure/` directory.
+on your own AWS account is directly from the `./infrastructure/aws/` directory.
 
 ```shell
-cd ./infrastructure
+cd ./infrastructure/aws
 
 export AWS_DEFAULT_REGION=us-east-1   # or replace with your region
 export AWS_PROFILE=default            # or replace with your aws profile
@@ -91,7 +91,7 @@ with the following content:
 # ./terragrunt.hcl
 
 terraform {
-  source = "git::git@github.com:DevLearnOps/tutorials//sample-apps/simple-frontend-backend/infrastructure?ref=main"
+  source = "git::git@github.com:DevLearnOps/tutorials//sample-apps/simple-frontend-backend/infrastructure/aws?ref=main"
 }
 
 inputs = {
@@ -104,7 +104,7 @@ This simple Terragrunt file will automatically checkout the infrastructure code 
 Terragrunt commands.
 
 Using Terragrunt will also allow you to specify input variables using the `inputs = {...}` section. Feel free to modify
-this section with your own variables and values. A full list of available variables can be found in the [./infrastructure/variables.tf](./infrastructure/variables.tf) file.
+this section with your own variables and values. A full list of available variables can be found in the [./infrastructure/aws/variables.tf](./infrastructure/aws/variables.tf) file.
 
 Now, open a shell at the same location as the `terragrunt.hcl` file you just created and run the following:
 
